@@ -1,10 +1,10 @@
 import socket
-from server import Server
+from server_ABC import Server
 from typing import Dict
 
 # TODO: Reduce code by creating parent Server class
 class NameServer(Server):
-    def __init__(self, host="localhost", port=1234):
+    def __init__(self, host, port):
         self.server_addreses: Dict[str,str] = {}
         super().__init__(host, port)
 
@@ -26,3 +26,10 @@ class NameServer(Server):
                 ans = self.server_addreses.get(name, "Not found")
                 self.sock.sendto(ans.encode(), addr)
                         
+
+
+def run_name_server():
+    ns = NameServer(host="localhost", port=7777)
+
+if __name__ == "__main__":
+    run_name_server()

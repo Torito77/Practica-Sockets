@@ -2,7 +2,7 @@ import socket
 from abc import ABC, abstractmethod
 
 class Server(ABC):
-    def __init__(self, host="localhost", port=1234):
+    def __init__(self, host, port):
         self.host = host
         self.port = port
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
