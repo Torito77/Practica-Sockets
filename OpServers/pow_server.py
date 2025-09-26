@@ -1,4 +1,4 @@
-from operation_server_ABC import OperationServer
+from Abstracts.operation_server_ABC import OperationServer
 from typing import List
 
 class PowServer(OperationServer):
