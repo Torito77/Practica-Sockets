@@ -13,7 +13,6 @@ class OperationServer(Server):
         self.sign: str = sign
         
     def server_start(self):
-        #TODO: Send a Register to name server
         self.sock.sendto(f"REGISTER {self.name} {self.host} {self.port}".encode(),("localhost",7777))
         while True:
             data, addr = self.sock.recvfrom(1024)
@@ -24,7 +23,7 @@ class OperationServer(Server):
                 n_list = msg.split(",")
                 nums = [int(num) for num in n_list]
                 res = self.operate(nums)
-                self.sock.sendto(f"{self.sign.join(n_list)} = {res}".encode(), addr)
+                self.sock.sendto(f"{f" {self.sign} ".join(n_list)} = {res}".encode(), addr)
             except ValueError as ve:
                 self.sock.sendto(f"Error: Formato inválido".encode(), addr)
             except NotEnoughNumbersError as nene:

@@ -8,7 +8,7 @@ class SubServer(OperationServer):
     def operate(self, nums: List[int]):
         super().operate(nums)
         
-        n = 0
-        for number in nums:
+        n = nums[0]
+        for number in nums[1::]:
             n -= number
         return n

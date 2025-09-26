@@ -3,7 +3,6 @@ from server_ABC import Server
 from typing import Dict
 import threading
 
-# TODO: Reduce code by creating parent Server class
 class NameServer(Server):
     def __init__(self, host, port):
         super().__init__(host, port)
@@ -34,18 +33,14 @@ class NameServer(Server):
                     sl = f"[{",".join( list( self.server_addreses.keys() ) )}]"
                     
                 self.sock.sendto(sl.encode(), addr)
-
+            
             # LOOKUP name
             # Returns the ip:port of a server under name
             elif len(parts) == 2 and parts[0].upper() == "LOOKUP":
                 name = parts[1]
                 ans = self.server_addreses.get(name, "Not found")
                 self.sock.sendto(ans.encode(), addr)
-                        
-
-
-def run_name_server():
-    ns = NameServer(host="localhost", port=7777)
-
-if __name__ == "__main__":
-    run_name_server()
+                
+            # Invalid command
+            else:
+                self.sock.sendto("Invalid request".encode(), addr)
