@@ -11,11 +11,11 @@ operations = {
 
 addr = None
 
-print("Presiona exit para salir...")
+print("Escribe ENTER para salir...")
 while True:
     if not addr:
         print("¿Qué operacion desea realizar?")
-        opciones = operations.keys().capitalize()
+        opciones = [op.capitalize() for op in list(operations.keys())]
         print( ", ".join(opciones) )
         print("Escribe la operacion: ", end="") 
         
