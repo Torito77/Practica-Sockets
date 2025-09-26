@@ -28,6 +28,14 @@ while True:
         if addr: addr = None
         else: break
     elif not addr:
+        if user_input not in operations.keys():
+            matches = [value for value in operations.keys() if user_input in value ]
+            if len(matches) == 1:
+                user_input = matches[0]
+            else:
+                print("Entrada invalida")
+                continue
+            
         resp = msg_server(msg=f"LOOKUP {operations[user_input]}")
         ip, port = resp.split(":")
         addr = (ip, int(port))
