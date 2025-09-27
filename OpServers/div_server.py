@@ -10,5 +10,7 @@ class DivServer(OperationServer):
         
         n = nums[0]
         for number in nums[1::]:
+            if number == 0:
+                return "Error"
             n /= number
         return n

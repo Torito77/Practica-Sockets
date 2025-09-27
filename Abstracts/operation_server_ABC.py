@@ -1,4 +1,4 @@
-from server_ABC import Server
+from Abstracts.server_ABC import Server
 from abc import abstractmethod
 from typing import List
 
@@ -13,7 +13,7 @@ class OperationServer(Server):
         self.sign: str = sign
         
     def server_start(self):
-        self.sock.sendto(f"REGISTER {self.name} {self.host} {self.port}".encode(),("localhost",7777))
+        self.sock.sendto(f"REGISTER {self.name}".encode(),("localhost",7777))
         while True:
             data, addr = self.sock.recvfrom(1024)
             msg = data.decode().strip()

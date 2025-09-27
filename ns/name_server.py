@@ -1,27 +1,31 @@
 import socket
-from server_ABC import Server
+from Abstracts.server_ABC import Server
 from typing import Dict
-import threading
 
 class NameServer(Server):
     def __init__(self, host, port):
         super().__init__(host, port)
         self.server_addreses: Dict[str,str] = {}
-        self.ready = threading.Event()
 
     def server_start(self):
-        self.ready.set()
-        
         while True:
             data, addr = self.sock.recvfrom(1024)
             msg = data.decode().strip()
             print(f"[{addr}]: {msg}")
             parts = msg.split()
             
-            # REGISTER name ip port
+            # LOOKUP name
+            # Returns the ip:port of a server under name
+            if len(parts) == 2 and parts[0].upper() == "LOOKUP":
+                name = parts[1]
+                ans = self.server_addreses.get(name, "Not found")
+                self.sock.sendto(ans.encode(), addr)
+                
+            # REGISTER name 
             # Registers an ip:port in the server list
-            if len(parts) == 4 and parts[0].upper() == "REGISTER":
-                _, name, ip, port = parts
+            elif len(parts) == 2 and parts[0].upper() == "REGISTER":
+                name= parts[1]
+                ip, port = addr
                 self.server_addreses[name] = f"{ip}:{port}"
                         
             # SHOW SERVER LIST
@@ -33,13 +37,6 @@ class NameServer(Server):
                     sl = f"[{",".join( list( self.server_addreses.keys() ) )}]"
                     
                 self.sock.sendto(sl.encode(), addr)
-            
-            # LOOKUP name
-            # Returns the ip:port of a server under name
-            elif len(parts) == 2 and parts[0].upper() == "LOOKUP":
-                name = parts[1]
-                ans = self.server_addreses.get(name, "Not found")
-                self.sock.sendto(ans.encode(), addr)
                 
             # Invalid command
             else:
